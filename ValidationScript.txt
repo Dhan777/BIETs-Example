@@ -1,0 +1,353 @@
+$(document).ready(function () {
+debugger;
+var courseId = $("#CourseId").val();
+//----------------PG Detail
+var PGCourse = $("#PGCourse");
+var PGRollNo = $("#PGRollNo");
+var PGPassingYear = $("#PGPassingYear");
+var PGUniversity = $("#PGUniversity");
+var PGCollege = $("#PGCollege");
+var PGMaxMarks = $("#PGMaxMarks");
+var PGObtainMarks = $("#PGObtainMarks");
+var PGPercentage = $("#PGPercentage")
+//----------------UG Detail
+var UGCourse = $("#UGCourse");
+var UGRollNo = $("#UGRollNo");
+var UGPassingYear = $("#UGPassingYear");
+var UGUniversity = $("#UGUniversity");
+var UGCollege = $("#UGCollege");
+var UGMaxMarks = $("#UGMaxMarks");
+var UGObtainMarks = $("#UGObtainMarks");
+var UGPercentage = $("#UGPercentage")
+if (courseId != "1") {
+UGCourse.attr("validateKey", "input").parent("div").addClass("required");
+UGRollNo.attr("validateKey", "input").parent("div").addClass("required");
+UGPassingYear.attr("validateKey", "input").parent("div").addClass("required");
+UGUniversity.attr("validateKey", "input").parent("div").addClass("required");
+UGCollege.attr("validateKey", "input").parent("div").addClass("required");
+UGMaxMarks.attr("validateKey", "input").parent("div").addClass("required");
+UGObtainMarks.attr("validateKey", "input").parent("div").addClass("required");
+UGPercentage.attr("validateKey", "input").parent("div").addClass("required");
+}
+if (courseId == "4") {
+PGCourse.attr("validateKey", "input").parent("div").addClass("required");
+PGRollNo.attr("validateKey", "input").parent("div").addClass("required");
+PGPassingYear.attr("validateKey", "input").parent("div").addClass("required");
+PGUniversity.attr("validateKey", "input").parent("div").addClass("required");
+PGCollege.attr("validateKey", "input").parent("div").addClass("required");
+PGMaxMarks.attr("validateKey", "input").parent("div").addClass("required");
+PGObtainMarks.attr("validateKey", "input").parent("div").addClass("required");
+PGPercentage.attr("validateKey", "input").parent("div").addClass("required");
+}
+var Msg = "";
+var Cntrl = "";
+var isOk;
+$('[validateKey*="Email"]').change(function () {
+if (!(ValidateEmail($(this).val()))) {
+Msg = $(this).parent().find('label').text() + " is Not Valid";
+$(this).focus();
+Cntrl = $(this);
+swal(Msg, "", "warning");
+isOk = false;
+return false;
+}
+else {
+Msg = "";
+}
+});
+$('#SaveBtn').click(function (e) {
+debugger;
+isOk = true;
+$('[validateKey*="input"]').each(function () {
+if (Msg != "") {
+$(Cntrl).focus();
+swal(Msg, "", "warning");
+isOk = false;
+return false;
+}
+else {
+if ($(this).val() == "") {
+$(this).focus();
+// swal("Please Fill " + $(this).parent().find('label').text(), "", "warning");
+swal($(this).attr("ErrorMessage"), "", "warning");
+e.preventDefault();
+isOk = false;
+return false;
+}
+}
+});
+if (isOk != true) {
+e.preventDefault();
+isOk = false;
+return false;
+}
+if (isOk == true) {
+swal({
+title: "Are you sure you want to save your Academic Qualification ? ",
+text: "",
+type: "warning",
+showCancelButton: true,
+confirmButtonClass: "btn-danger",
+confirmButtonText: "Yes, Submit it!",
+cancelButtonText: "No, cancel it!",
+closeOnConfirm: false,
+closeOnCancel: false
+},
+function (isConfirm) {
+if (isConfirm) {
+//swal("Deleted!", "Your imaginary file has been deleted.", "success");
+$('form').submit();
+} else {
+swal("Cancelled", "Your Academic Qualification has not been Saved :)", "error");
+e.preventDefault();
+isOk = false;
+return false;
+}
+});
+}
+});
+$('input[type="text"].num').bind('keydown', function (e) {
+// Allow: backspace, delete, tab, escape, enter and .
+if ($.inArray(e.keyCode, [46, 8, 9, 27, 13, 110, 190]) !== -1 ||
+// Allow: Ctrl+A
+(e.keyCode == 65 && e.ctrlKey === true) ||
+// Allow: Ctrl+C
+(e.keyCode == 67 && e.ctrlKey === true) ||
+// Allow: Ctrl+X
+(e.keyCode == 88 && e.ctrlKey === true) ||
+// Allow: home, end, left, right
+(e.keyCode >= 35 && e.keyCode <= 39)) {
+// let it happen, don't do anything
+return;
+}
+// Ensure that it is a number and stop the keypress
+if ((e.shiftKey || (e.keyCode < 48 || e.keyCode > 57)) && (e.keyCode < 96 || e.keyCode > 105)) {
+e.preventDefault();
+}
+});
+$('input[type="text"].Alf').bind('keydown', function (e) {
+var key = e.keyCode;
+if ($.inArray(e.keyCode, [46, 8, 9, 27, 13, 110, 190]) !== -1) {
+return true;
+}
+else if (!((key == 8) || (key == 32) || (key == 46) || (key >= 35 && key <= 40) || (key >= 65 && key <= 90))) {
+e.preventDefault();
+}
+if (!((e.shiftKey || (e.keyCode < 48 || e.keyCode > 57)) && (e.keyCode < 96 || e.keyCode > 105))) {
+e.preventDefault();
+}
+});
+//-------------------------------
+//Highschool Percentage
+$('input[type="text"].hm').on('focusout', function () {
+debugger;
+var HMaxMarks = $("#HMaxMarks").val();
+var HObtainMarks = $("#HObtainMarks").val();
+if (parseFloat(HObtainMarks) > parseFloat(HMaxMarks)) {
+Cntrl = $("#HObtainMarks");
+$("#HObtainMarks").focus();
+Msg = "High School Obtained Marks should not be greater than Max Marks";
+$("#HPercentage").val('')
+if ($("#HObtainMarks").val("") != "") {
+swal(Msg, "", "warning");
+}
+$("#HObtainMarks").val("");
+$("#HObtainMarks").focus();
+return;
+}
+else {
+Msg = "";
+var HPercentage = $("#HPercentage");
+HPercentage.val(CalculatePer(HMaxMarks, HObtainMarks)).next("label").addClass("active")
+}
+})
+//Intermediate Percentage
+$('input[type="text"].im').bind('focusout', function () {
+debugger;
+var IMaxMarks = $("#IMaxMarks").val();
+var IObtainMarks = $("#IObtainMarks").val();
+if (parseFloat(IObtainMarks) > parseFloat(IMaxMarks)) {
+Cntrl = $("#IObtainMarks");
+$("#IObtainMarks").focus();
+Msg = "Intermediate Obtained Marks should not be greater than Max Marks";
+$("#IPercentage").val('')
+if ($("#IObtainMarks").val("") != "") {
+swal(Msg, "", "warning");
+}
+$("#IObtainMarks").val("");
+$("#IObtainMarks").focus();
+return;
+}
+else {
+Msg = "";
+var IPercentage = $("#IPercentage");
+IPercentage.val(CalculatePer(IMaxMarks, IObtainMarks)).next("label").addClass("active")
+}
+})
+//UG Percentage
+$('input[type="text"].ug').bind('focusout', function () {
+debugger;
+var UGMaxMarks = $("#UGMaxMarks").val();
+var UGObtainMarks = $("#UGObtainMarks").val();
+if (parseFloat(UGObtainMarks) > parseFloat(UGMaxMarks)) {
+Cntrl = $("#UGObtainMarks");
+$("#UGObtainMarks").focus();
+Msg = "UG Obtained Marks should not be greater than Max Marks";
+$("#UGPercentage").val('')
+if ($("#UGObtainMarks").val("") != "") {
+swal(Msg, "", "warning");
+}
+$("#UGObtainMarks").val("");
+$("#UGObtainMarks").focus();
+return;
+}
+else {
+Msg = "";
+var UGPercentage = $("#UGPercentage");
+UGPercentage.val(CalculatePer(UGMaxMarks, UGObtainMarks)).next("label").addClass("active")
+}
+})
+//PG Percentage
+$('input[type="text"].pg').bind('focusout', function () {
+debugger;
+var PGMaxMarks = $("#PGMaxMarks").val();
+var PGObtainMarks = $("#PGObtainMarks").val();
+if (parseFloat(PGObtainMarks) > parseFloat(PGMaxMarks)) {
+Cntrl = $("#PGObtainMarks");
+$("#PGObtainMarks").focus();
+Msg = "PG Obtained Marks should not be greater than Max Marks";
+$("#PGPercentage").val('')
+if ($("#PGObtainMarks").val("") != "") {
+swal(Msg, "", "warning");
+}
+$("#PGObtainMarks").val("");
+$("#PGObtainMarks").focus();
+return;
+}
+else {
+Msg = "";
+var PGPercentage = $("#PGPercentage");
+PGPercentage.val(CalculatePer(PGMaxMarks, PGObtainMarks)).next("label").addClass("active")
+}
+})
+//Highschool Percentage
+$('input[type="text"].oc').bind('focusout', function () {
+debugger;
+var OMaxMarks = $("#OMaxMarks").val();
+var OObtainMarks = $("#OObtainMarks").val();
+if (parseFloat(OObtainMarks) > parseFloat(OMaxMarks)) {
+Cntrl = $("#OObtainMarks");
+$("#OObtainMarks").focus();
+Msg = "Other Obtained Marks should not be greater than Max Marks";
+$("#OPercentage").val('')
+if ($("#OObtainMarks").val("") != "") {
+swal(Msg, "", "warning");
+}
+$("#OObtainMarks").val("");
+$("#OObtainMarks").focus();
+return;
+}
+else {
+Msg = "";
+var OPercentage = $("#OPercentage");
+OPercentage.val(CalculatePer(OMaxMarks, OObtainMarks)).next("label").addClass("active")
+}
+})
+});
+$("#HPassingYear").on("change", function () {
+HIndex = $("#HPassingYear").prop('selectedIndex');
+var Url = "/Master/GetIPassingYear";
+var Cntrl = $("#IPassingYear");
+var courseId = $("#CourseId").val();
+if (courseId == 1) {
+GetPassingYears(HIndex, Cntrl, Url, 2018);
+}
+else if (courseId == 2) {
+GetPassingYears(HIndex, Cntrl, Url, 2015);
+}
+else if (courseId == 3) {
+GetPassingYears(HIndex, Cntrl, Url, 2014);
+}
+else if (courseId == 4) {
+GetPassingYears(HIndex, Cntrl, Url, 2013);
+}
+GetPassingYears(HIndex, $("#OPassingYear"), Url, 2018);
+});
+$("#IPassingYear").on("change", function () {
+debugger;
+IIndex = $("#IPassingYear").prop('selectedIndex');
+var Url = "/Master/GetIPassingYear";
+var Cntrl = $("#UGPassingYear");
+var Index = parseInt(HIndex) + parseInt(IIndex) + 2;
+var courseId = $("#CourseId").val();
+if (courseId == 1) {
+GetPassingYears(Index, Cntrl, Url, 2018);
+}
+else if (courseId == 2) {
+GetPassingYears(Index, Cntrl, Url, 2018);
+}
+else if (courseId == 3) {
+GetPassingYears(Index, Cntrl, Url, 2018);
+}
+else if (courseId == 4) {
+GetPassingYears(Index, Cntrl, Url, 2016);
+}
+});
+$("#UGPassingYear").on("change", function () {
+HIndex = $("#HPassingYear").prop('selectedIndex');
+IIndex = $("#IPassingYear").prop('selectedIndex');
+UGIndex = $("#UGPassingYear").prop('selectedIndex');
+var Index = parseInt(HIndex) + parseInt(IIndex) + parseInt(UGIndex)+3;
+var Url = "/Master/GetIPassingYear";
+var Cntrl = $("#PGPassingYear");
+debugger;
+var courseId = $("#CourseId").val();
+if (courseId == 1) {
+GetPassingYears(Index, Cntrl, Url, 2018);
+}
+else if (courseId == 2) {
+GetPassingYears(Index, Cntrl, Url, 2018);
+}
+else if (courseId == 3) {
+GetPassingYears(Index, Cntrl, Url, 2018);
+}
+else if (courseId == 4) {
+GetPassingYears(Index, Cntrl, Url, 2018);
+}
+});
+//$("#PGPassingYear").on("change", function () {
+// PGIndex = $("#PGPassingYear").prop('selectedIndex');
+// var Url = "/Master/GetIPassingYear";
+// var Cntrl = $("#OPassingYear");
+// HIndex = $("#HPassingYear").prop('selectedIndex');
+// GetPassingYears(Index, Cntrl, Url,2018);
+//});
+function GetPassingYears(i, Cntrl, url, Count) {
+$.ajax({
+type: "Get",
+url: url,
+data: { Year: i },
+dataType: "json",
+success: function (Response) {
+$(Cntrl).html("");
+$(Cntrl).append("<option value=''>Select</option>");
+$.each(Response, function (i, value)
+{
+debugger;
+if (value.Value <= Count) {
+$(Cntrl).append("<option value=" + value.Value + ">" + value.Text + "</option>")
+}
+});
+},
+error: function (xhtr) {
+console.log(xhtr.messageStatus);
+}
+});
+}
+function CalculatePer(_maxMarks, _obtMark) {
+var per = "";
+if (_maxMarks != "" && _obtMark != "" && _maxMarks != undefined && !_obtMark != undefined) {
+per = parseFloat((parseFloat(_obtMark) * 100) / _maxMarks).toFixed(2);
+}
+return per;
+}

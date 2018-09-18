@@ -1,0 +1,35 @@
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Web;
+namespace BIET.Models
+{
+public class AccountModel
+{
+}
+public class AccountLogin : Result
+{
+public string UserName { get; set; }
+public string Password { get; set; }
+public string DisplayPass { get; set; }
+public string OTP { get; set; }
+public string NewPassword { get; set; }
+public string CaptchaText { get; set; }
+public string CnfPassword { get; set; }
+}
+public class Result : StudentCommon
+{
+public bool IsExists { get; set; }
+public bool IsSuccess { get; set; }
+public bool IsBlock { get; set; }
+public string ErrorMsg { get; set; }
+public bool IsInvalid { get; set; }
+public bool IsMatch { get; set; }
+public bool IsSend{ get; set; }
+}
+public class Menu
+{
+public string URL { get; set; }
+public int Step { get; set; }
+}
+}

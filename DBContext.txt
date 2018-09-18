@@ -1,0 +1,355 @@
+using MvcApplication3.Models;
+using MvcApplication3.Repository;
+using System;
+using System.Collections.Generic;
+using System.Data.Entity;
+using System.Data.SqlClient;
+using System.Linq;
+using System.Web;
+namespace MvcApplication3.DBRepository
+{
+public class BIET_DBContext : DbContext
+{
+#region DbContext
+public BIET_DBContext()
+: base("ConnectionString") { }
+//public BIET_DBContext()
+//{
+// Database.SetInitializer<BIET_DBContext>(null);
+// var dbTimeOut = (this as IObjectContextAdapter).ObjectContext;
+// dbTimeOut.CommandTimeout = 120;
+//}
+//~BIET_DBContext()
+//{
+// this.Database.Connection.Dispose();
+//}
+#endregion
+public IEnumerable<T> StudentAuth<T>(AccountLogin model)
+{
+var sqlParms = new SqlParameter[]{
+new SqlParameter { ParameterName = "@UserName", Value = model.UserName} ,
+new SqlParameter { ParameterName = "@Password", Value = model.Password} ,
+new SqlParameter { ParameterName = "@IPAddress", Value = new IPAddress().getIPAddress()} ,
+};
+var sqlQuery = "Proc_StudentAuth @UserName,@Password";
+var slist = this.Database.SqlQuery<T>(sqlQuery, sqlParms).ToList();
+return slist;
+}
+#region GetAllCourses
+public virtual IEnumerable<Course> GetDistinctCourses()
+{
+try
+{
+string Query = "PROC_FAC_getDistinctCourse";
+return this.Database.SqlQuery<Course>(Query);
+}
+catch (Exception E)
+{
+return null;
+}
+}
+#endregion
+#region GetBranchesByCourseId
+public virtual IEnumerable<branch> GetBranchesByCourseId(Int32 CourseId)
+{
+try
+{
+var SqlParas = new SqlParameter[]
+{
+new SqlParameter{ParameterName="@CourseId",Value=CourseId}
+};
+string Query = "proc_GetBranchesByCourseId @CourseId";
+var list = this.Database.SqlQuery<branch>(Query, SqlParas).ToList();
+return list;
+}
+catch (Exception E)
+{
+return null;
+}
+}
+#endregion
+#region GetSemester
+public virtual IEnumerable<Sem> GetSemByCourseId(Int32 CourseId)
+{
+try
+{
+var SqlParas = new SqlParameter[]
+{
+new SqlParameter{ParameterName="@CourseId",Value=CourseId}
+};
+string Query = "proc_GetSemByCourseId @CourseId";
+var list = this.Database.SqlQuery<Sem>(Query, SqlParas).ToList();
+return list;
+}
+catch (Exception E) { return null; }
+}
+#endregion
+#region GetCategory
+public virtual IEnumerable<Category> GetCategory()
+{
+try
+{
+var SqlParas = new SqlParameter[]
+{
+};
+string Query = "PROC_STU_getCategory";
+var list = this.Database.SqlQuery<Category>(Query, SqlParas).ToList();
+return list;
+}
+catch (Exception E) { return null; }
+}
+#endregion
+#region GetFeeCategory
+public virtual IEnumerable<FeeCategory> GetFeeCategory()
+{
+try
+{
+var SqlParas = new SqlParameter[]
+{
+};
+string Query = "PROC_getFeeSubCategory";
+var list = this.Database.SqlQuery<FeeCategory>(Query, SqlParas).ToList();
+return list;
+}
+catch (Exception E) { return null; }
+}
+#endregion
+#region GetFeeCategory
+public virtual IEnumerable<SubCategory> GetSubCategory()
+{
+try
+{
+var SqlParas = new SqlParameter[]
+{
+};
+string Query = "PROC_STU_getSubCategory";
+var list = this.Database.SqlQuery<SubCategory>(Query, SqlParas).ToList();
+return list;
+}
+catch (Exception E) { return null; }
+}
+#endregion
+#region GetAdmissionMode
+public virtual IEnumerable<AdmissionMode> GetAdmissionMode(int CourseId)
+{
+try
+{
+SqlParameter[] Para = new SqlParameter[]
+{
+new SqlParameter{ParameterName="@CourseID",Value=CourseId}
+};
+string Query = "Proc_STU_GetAdmissionMode @CourseId";
+var list = this.Database.SqlQuery<AdmissionMode>(Query, Para).ToList();
+return list;
+}
+catch (Exception E)
+{
+return null;
+}
+}
+#endregion
+#region GetReligion
+public virtual IEnumerable<Religion> GetReligion()
+{
+try
+{
+SqlParameter[] Para = new SqlParameter[]
+{
+};
+string Query = "sp_BindReligionMaster";
+var list = this.Database.SqlQuery<Religion>(Query, Para).ToList();
+return list;
+}
+catch (Exception E) { return null; }
+}
+#endregion
+#region Getstate
+public virtual IEnumerable<State> GetState(State model)
+{
+try
+{
+SqlParameter[] Para = new SqlParameter[]
+{
+new SqlParameter{ParameterName="@stateName",Value=model.StateName??string.Empty},
+new SqlParameter{ParameterName="@stateId",Value=model.StateID},
+new SqlParameter{ParameterName="@CountryId",Value=model.CountryId},
+new SqlParameter{ParameterName="@procId",Value=model.ProcId},
+};
+string Query = "Proc_StateMaster @StateName,@StateId,@CountryId,@ProcId";
+return this.Database.SqlQuery<State>(Query, Para).ToList();
+}
+catch (Exception E) { return null; }
+}
+#endregion
+public virtual IEnumerable<District> GetDistrict(District model)
+{
+try
+{
+SqlParameter[] Para = new SqlParameter[]
+{
+new SqlParameter{ParameterName="@districtName",Value=model.DistrictName??string.Empty},
+new SqlParameter{ParameterName="@stateId",Value=model.StateID},
+new SqlParameter{ParameterName="@districtId",Value=model.DistrictID},
+new SqlParameter{ParameterName="@procId",Value=model.ProcId},
+};
+string Query = "Proc_DistrictMaster @districtName,@StateId,@districtId,@ProcId";
+return this.Database.SqlQuery<District>(Query, Para).ToList();
+}
+catch (Exception E) { return null; }
+}
+public virtual IEnumerable<DisabiltyType> GetDisabiltyType()
+{
+try
+{
+SqlParameter[] Para = new SqlParameter[]
+{
+};
+string Query = "sp_BindDisabiltyType";
+return this.Database.SqlQuery<DisabiltyType>(Query, Para);
+}
+catch (Exception E) { return null; }
+}
+public virtual IEnumerable<Country> GetCountry()
+{
+try
+{
+SqlParameter[] Para = new SqlParameter[]
+{
+};
+string Query = "Proc_GetAllCountry";
+return this.Database.SqlQuery<Country>(Query, Para).ToList();
+}
+catch (Exception E) { return null; }
+}
+public virtual IEnumerable<bloodGroup> GetBloodGroup()
+{
+try
+{
+SqlParameter[] Para = new SqlParameter[]
+{
+};
+string Query = "sp_bindBloodGroop";
+return this.Database.SqlQuery<bloodGroup>(Query, Para).ToList();
+}
+catch (Exception E) { return null; }
+}
+#region ValidateStudent
+public virtual IEnumerable<AccountLogin> ValidateStudent(StudentCommon model)
+{
+try
+{
+var SqlPara = new SqlParameter[]
+{
+new SqlParameter {ParameterName="@ProcId",Value=model.ProcId},
+new SqlParameter {ParameterName="@Course",Value=model.CourseId},
+new SqlParameter {ParameterName="@branch",Value=model.branchId},
+new SqlParameter {ParameterName="@Sem",Value=model.Semester},
+new SqlParameter {ParameterName="@SeeRollNo",Value=model.SeeRollNo},
+new SqlParameter {ParameterName="@SessionId",Value=model.SessionID}
+};
+string Query = "Proc_ValidateStudent @ProcId,@Course,@Branch,@Sem,@SeeRollNo,@SessionId";
+return this.Database.SqlQuery<AccountLogin>(Query, SqlPara);
+}
+catch (Exception E)
+{
+return null;
+}
+}
+public virtual IEnumerable<AccountLogin> CreateLogin_OTP(StudentCommon model)
+{
+try
+{
+var SqlPara = new SqlParameter[]
+{
+new SqlParameter {ParameterName="@RefNo",Value=model.RefNo},
+new SqlParameter {ParameterName="@SeeRollNo",Value=model.SeeRollNo},
+new SqlParameter {ParameterName="@Domicile",Value=model.Domicile},
+new SqlParameter {ParameterName="@CategoryId",Value=model.CategoryId},
+new SqlParameter {ParameterName="@FeeCategoryId",Value=model.FeeCategoryId} ,
+new SqlParameter {ParameterName="@IsHostelReq",Value=model.IsHostel},
+new SqlParameter {ParameterName="@MobileNo",Value=model.MobileNo},
+new SqlParameter {ParameterName="@EmailID",Value=model.EmailID},
+new SqlParameter {ParameterName="@IPAddress",Value=new IPAddress().getIPAddress()},
+};
+string Query = "Proc_GenerateOTP @RefNo,@SeeRollNo,@Domicile,@CategoryId,@FeeCategoryId,@IsHostelReq,@MobileNo,@EmailID,@IPAddress";
+return this.Database.SqlQuery<AccountLogin>(Query, SqlPara);
+}
+catch (Exception E)
+{
+return null;
+}
+}
+public virtual IEnumerable<Result> VerifyOPT(AccountLogin model)
+{
+try
+{
+var SqlPara = new SqlParameter[]
+{
+new SqlParameter {ParameterName="@RegistrationNo",Value=model.RegistrationNo},
+new SqlParameter {ParameterName="@password",Value= model.Password},
+new SqlParameter {ParameterName="@DisplayPass",Value= model.DisplayPass},
+new SqlParameter {ParameterName="@OTP",Value= model.OTP} ,
+new SqlParameter {ParameterName="@IPAddress",Value= new IPAddress().getIPAddress()}
+};
+string Query = "Proc_VerifyOTP @RegistrationNo,@password,@DisplayPass,@OTP,@IPAddress";
+return this.Database.SqlQuery<Result>(Query, SqlPara);
+}
+catch (Exception E)
+{
+return null;
+}
+}
+public virtual IEnumerable<AccountLogin> ResendOTP(string RegistrationNo)
+{
+try
+{
+var SqlPara = new SqlParameter[]
+{
+new SqlParameter {ParameterName="@RegistrationNo",Value=RegistrationNo},
+};
+string Query = "Proc_GetOTPforResend @RegistrationNo";
+return this.Database.SqlQuery<AccountLogin>(Query, SqlPara);
+}
+catch (Exception E)
+{
+return null;
+}
+}
+public virtual IEnumerable<Result> ChangePassword(AccountLogin model)
+{
+try
+{
+var SqlPara = new SqlParameter[]
+{
+new SqlParameter {ParameterName="@RegistrationNo",Value=model.RegistrationNo},
+new SqlParameter {ParameterName="@OldPassword",Value= model.Password},
+new SqlParameter {ParameterName="@NewPassword",Value= model.NewPassword},
+new SqlParameter {ParameterName="@displaypass",Value= model.DisplayPass}
+};
+string Query = "Proc_ChangePassword @RegistrationNo,@OldPassword,@NewPassword,@displaypass";
+return this.Database.SqlQuery<Result>(Query, SqlPara);
+}
+catch (Exception E)
+{
+return null;
+}
+}
+public IEnumerable<T> GetDetailforForgotPassword<T>(string RegistrationNo)
+{
+try
+{
+SqlParameter[] Para = new SqlParameter[]
+{
+new SqlParameter{ParameterName="@RegistrationNo",Value=RegistrationNo},
+};
+string Query = "Proc_GetDetailForForgotPass @RegistrationNo";
+return this.Database.SqlQuery<T>(Query, Para);
+}
+catch (Exception E)
+{
+return null;
+}
+}
+#endregion
+}
+}

@@ -1,0 +1,36 @@
+--Proc_StudentsByBranchAndStep '00',1
+ALTER PROCEDURE dbo.Proc_StudentsByBranchAndStep
+@Branch VARCHAR(10)=null,
+@StepNo INT =0
+AS
+BEGIN
+SELECT * INTO #temp from (
+SELECT * FROM (
+SELECT C.CateGoryName,
+C.CategoryID,
+R.Gender FROM dbo.T_CandidateRegistration R
+JOIN dbo.M_Category C ON R.CategoryId=C.CategoryID
+WHERE R.branchId=@Branch AND R.StepNo=@StepNo
+) src PIVOT
+(COUNT(CategoryId) FOR CategoryName IN ([General],[OBC],[SC],[ST]))piv)T
+SELECT CASE WHEN Gender='F' THEN 'Female'
+WHEN Gender='M' THEN 'Male'
+END Gender,General,OBC,SC,ST FROM #Temp
+UNION
+SELECT 'Total'Gender,SUM(General) General,SUM(OBC)OBC,SUM(SC)SC,SUM(ST)ST FROM #Temp
+ORDER BY Gender
+END
+GO
+------------------------------------------------------------------------------
+CREATE PROCEDURE Proc_StudentsByBranch
+AS
+BEGIN
+SELECT *
+FROM ( SELECT M.branchName ,
+M.branchID ,
+StepNo
+FROM dbo.T_CandidateRegistration R
+LEFT JOIN dbo.M_BranchMaster M ON M.branchID = R.branchId
+) src PIVOT
+( COUNT(StepNo) FOR StepNo IN ( [1], [2], [3], [4], [5], [6], [7], [8] )
+) piv;

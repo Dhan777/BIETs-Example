@@ -1,0 +1,358 @@
+Download Free Office API
+using System;
+using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
+using System.Linq;
+using System.Web;
+namespace BIET.Models
+{
+public class RegistrationModel
+{
+public int ProcId { get; set; }
+public int SessionID { get; set; }
+public int Semester { get; set; }
+public string RegistrationNo { get; set; }
+public string Domicile { get; set; }
+public string MobileNo { get; set; }
+public string EmailID { get; set; }
+public string SeeRollNo { get; set; }
+public string StudentName { get; set; }
+public int StepNo { get; set; }
+public string IsHostel { get; set; }
+public string Islateral { get; set; }
+public string RefNo { get; set; }
+public string FatherName { get; set; }
+public string DOB { get; set; }
+public string Gender { get; set; }
+public string SubCategoryName { get; set; }
+public string CategoryName { get; set; } public string FeeCategoryName { get; set; }
+public string adharCardNo { get; set; }
+public string AdmissionMode { get; set; }
+public string nationality { get; set; }
+public string Religion { get; set; }
+public string bloodGroupName { get; set; }
+public string identificationMarks { get; set; }
+public string isDisable { get; set; }
+public string CasteCertificateNo { get; set; }
+public string IsIncomeBelowTwoLac { get; set; }
+public string IncomeCertificateNo { get; set; }
+public string CourseName { get; set; }
+public string BranchName { get; set; }
+public string HRollNo { get; set; }
+public string HPassingYear { get; set; }
+public string HBoard { get; set; }
+public string HCollegeName { get; set; }
+public string HMaxMarks { get; set; }
+public string HObtainMarks { get; set; }
+public string HPercentage { get; set; }
+public string IRollNo { get; set; }
+public string IPassingYear { get; set; }
+public string IBoard { get; set; }
+public string IMaxMarks { get; set; }
+public string IObtainMarks { get; set; }
+public string ICollegeName { get; set; }
+public string IPercentage { get; set; }
+public string UGCourse { get; set; }
+public string UGRollNo { get; set; }
+public string UGPassingYear { get; set; }
+public string UGUniversity { get; set; }
+public string UGCollege { get; set; }
+public string UGPercentage { get; set; }
+public string UGMaxMarks { get; set; }
+public string UGObtainMarks { get; set; }
+public string PGCourse { get; set; }
+public string PGRollNo { get; set; }
+public string PGPassingYear { get; set; }
+public string PGUniversity { get; set; }
+public string PGCollege { get; set; }
+public string PGPercentage { get; set; }
+public string PGMaxMarks { get; set; }
+public string PGObtainMarks { get; set; }
+public string OCourse { get; set; }
+public string ORollNo { get; set; }
+public string OPassingYear { get; set; }
+public string OUniversity { get; set; }
+public string OCollege { get; set; }
+public string OPercentage { get; set; }
+public string OMaxMarks { get; set; }
+public string OObtainMarks { get; set; }
+public string StudentAlternativeMobile { get; set; }
+public string StudentAlternativeEmail { get; set; }
+public string fatherMobileNo { get; set; }
+public string fatherEmail { get; set; }
+public string motherMobile { get; set; }
+public string correspondenceAddress { get; set; }
+public string correspondenceCountry { get; set; }
+public string correspondenceState { get; set; }
+public string correspondenceDistrict { get; set; }
+public string correspondencePincode { get; set; }
+public string correspondenceSTDCode_LandlineNo { get; set; }
+public string permanentAddress { get; set; }
+public string permanentCountry { get; set; }
+public string permanentState { get; set; }
+public string permanentDistrict { get; set; }
+public string permanentPincode { get; set; }
+public string permanentSTDCode_LandlineNo { get; set; }
+public string GuardianName { get; set; }
+public string GuardianMobileNo { get; set; }
+public string BankName { get; set; }
+public string AccHolderName { get; set; }
+public string StuAccNo { get; set; }
+public string PANCardNo { get; set; }
+public string IFSCCode { get; set; }
+public string PhotoPath { get; set; }
+public string SignPath { get; set; }
+}
+public class StudentCommon : Course
+{
+public int ProcId { get; set; }
+public int SessionID { get; set; }
+public int Semester { get; set; }
+public string RegistrationNo { get; set; }
+public string Domicile { get; set; }
+public string MobileNo { get; set; }
+public string EmailID { get; set; }
+public string SeeRollNo { get; set; }
+public string StudentName { get; set; }
+public int StepNo { get; set; }
+public int IsHostel { get; set; }
+public bool Islateral { get; set; }
+public string RefNo { get; set; }
+public bool IsDDAllow { get; set; }
+public bool Ispay { get; set; }
+public bool IspayDD { get; set; }
+public bool IsMesspay { get; set; }
+public bool IsMesspayDD { get; set; }
+public IList<StudentCommon> Students { get; set; }
+}
+public class Sem
+{
+public int SemId { get; set; }
+public string SemName { get; set; }
+public int Semester { get; set; }
+}
+public class Course : branch
+{
+public int CourseId { get; set; }
+public string CourseName { get; set; }
+}
+public class branch : Category
+{
+public string branchId { get; set; }
+public string branchName { get; set; }
+}
+public class Category : FeeCategory
+{
+public int CategoryId { get; set; }
+public string CategoryName { get; set; }
+}
+public class FeeCategory : AdmissionMode
+{
+public int FeeCategoryId { get; set; }
+public string FeeCategoryName { get; set; }
+}
+public class AdmissionMode : Religion
+{
+public int AdmissionModeId { get; set; }
+public string AdmissionModeName { get; set; }
+}
+public class Religion:HostelMaster
+{
+public int religionID { get; set; }
+public string ReligionName { get; set; }
+}
+public class FeeSubmission : StudentCommon
+{
+public string DDNo { get; set; }
+public string DDDate { get; set; }
+public string BankName { get; set; }
+public string BankBranch { get; set; }
+public decimal amount { get; set; }
+// public decimal MessAmount { get; set; }
+public decimal DDAmount { get; set; }
+public int PaymentMode { get; set; }
+public int PaymentID { get; set; }
+public int MessPaymentID { get; set; }
+public int FeeID { get; set; }
+}
+public class RegistrationStep2 : StudentCommon
+{
+public string FatherName { get; set; }
+public string DOB { get; set; }
+public string Gender { get; set; }
+public string SubCategoryId { get; set; }
+public string adharCardNo { get; set; }
+public string AdmissionMode { get; set; }
+public string nationality { get; set; }
+public int bloodGroupID { get; set; }
+public string identificationMarks { get; set; }
+public int? isDisable { get; set; }
+public string CasteCertificateNo { get; set; }
+public int IsIncomeBelowTwoLac { get; set; }
+public string IncomeCertificateNo { get; set; }
+public int DisablityType { get; set; }
+}
+public class RegistrationStep3 : StudentCommon
+{
+[Required]
+public string HRollNo { get; set; }
+[Required]
+public string HPassingYear { get; set; }
+[Required]
+public string HBoard { get; set; }
+[Required]
+public string HCollegeName { get; set; }
+[Required]
+public string HMaxMarks { get; set; }
+[Required]
+public string HObtainMarks { get; set; }
+[Required]
+public string HPercentage { get; set; }
+[Required]
+public string IRollNo { get; set; }
+[Required]
+public string IPassingYear { get; set; }
+[Required]
+public string IBoard { get; set; }
+[Required]
+public string ICollegeName { get; set; }
+[Required]
+public string IPercentage { get; set; }
+[Required]
+public string IMaxMarks { get; set; }
+[Required]
+public string IObtainMarks { get; set; }
+public string UGCourse { get; set; }
+public string UGRollNo { get; set; }
+public string UGPassingYear { get; set; }
+public string UGUniversity { get; set; }
+public string UGCollege { get; set; }
+public string UGPercentage { get; set; }
+public string UGMaxMarks { get; set; }
+public string UGObtainMarks { get; set; }
+public string PGCourse { get; set; }
+public string PGRollNo { get; set; }
+public string PGPassingYear { get; set; }
+public string PGUniversity { get; set; }
+public string PGCollege { get; set; }
+public string PGPercentage { get; set; }
+public string PGMaxMarks { get; set; }
+public string PGObtainMarks { get; set; }
+public string OCourse { get; set; }
+public string ORollNo { get; set; }
+public string OPassingYear { get; set; }
+public string OUniversity { get; set; }
+public string OCollege { get; set; }
+public string OPercentage { get; set; }
+public string OMaxMarks { get; set; }
+public string OObtainMarks { get; set; }
+}
+public class RegistrationStep4 : StudentCommon
+{
+[Required]
+public string StudentAlternativeMobile { get; set; }
+[Required]
+[RegularExpression(@"^([a-zA-Z0-9_\-\.]+)@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.)|(([a-zA-Z0-9\-]+\.)+))([a-zA-Z]{2,4}|[0-9]{1,3})(\]?)$")]
+public string StudentAlternativeEmail { get; set; }
+[Required]
+public string fatherMobileNo { get; set; }
+[Required]
+[RegularExpression(@"^([a-zA-Z0-9_\-\.]+)@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.)|(([a-zA-Z0-9\-]+\.)+))([a-zA-Z]{2,4}|[0-9]{1,3})(\]?)$")]
+public string fatherEmail { get; set; }
+[Required]
+public string motherMobile { get; set; }
+[Required]
+public string correspondenceAddress { get; set; }
+[Required]
+public int correspondenceCountryId { get; set; }
+[Required]
+public int correspondenceStateId { get; set; }
+[Required]
+public int correspondenceDistrictId { get; set; }
+[Required]
+public string correspondencePincode { get; set; }
+[Required]
+public string correspondenceSTDCode_LandlineNo { get; set; }
+[Required]
+public string permanentAddress { get; set; }
+[Required]
+public int permanentCountryId { get; set; }
+[Required]
+public int permanentStateId { get; set; }
+[Required]
+public int permanentDistrictId { get; set; }
+[Required]
+public string permanentPincode { get; set; }
+[Required]
+public string permanentSTDCode_LandlineNo { get; set; }
+[Required]
+public string GuardianName { get; set; }
+[Required]
+public string GuardianMobileNo { get; set; }
+}
+public class RegistrationStep5 : StudentCommon
+{
+[Required]
+public string BankName { get; set; }
+[Required]
+public string AccHolderName { get; set; }
+[Required]
+public string StuAccNo { get; set; }
+[Required]
+public string PANCardNo { get; set; }
+[Required]
+public string IFSCCode { get; set; }
+}
+public class RegistrationStep6 : StudentCommon
+{
+public string PhotoPath { get; set; }
+public string SignPath { get; set; }
+}
+public class Country
+{
+public int CountryID { get; set; }
+public string CountryName { get; set; }
+}
+public class State
+{
+public int StateID { get; set; }
+public string StateName { get; set; }
+public string CountryId { get; set; }
+public string ProcId { get; set; }
+}
+public class District
+{
+public int StateID { get; set; }
+public string DistrictName { get; set; }
+public int DistrictID { get; set; }
+public string ProcId { get; set; }
+}
+public class bloodGroup
+{
+public int bloodGroupID { get; set; }
+public string bloodGroupName { get; set; }
+}
+public class HostelMaster
+{
+public int HostelID { get; set; }
+public string HostelName { get; set; }
+public string MessAccountNo { get; set; }
+public string Merchant_Key { get; set; }
+public string Salt { get; set; }
+}
+public class DisabiltyType
+{
+public int DisablityID { get; set; }
+public string DisablityName { get; set; }
+}
+public class SubCategory
+{
+public int SubCategoryID { get; set; }
+public string SubCategoryName { get; set; }
+}
+public class PassingYear
+{
+public int Value { get; set; }
+public string Text { get; set; }
+}
+}

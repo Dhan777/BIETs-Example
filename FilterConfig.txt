@@ -1,0 +1,123 @@
+using MvcApplication3.Repository;
+using System.Web;
+using System.Web.Mvc;
+using System.Web.Routing;
+using System.Web.Security;
+using MvcApplication3.Models;
+using System;
+namespace MvcApplication3
+{
+public class FilterConfig
+{
+public static void RegisterGlobalFilters(GlobalFilterCollection filters)
+{
+filters.Add(new HandleErrorAttribute());
+filters.Add(new ExceptionFilter());
+}
+[SessionTimeout]
+public class AuthoAttribute : System.Web.Mvc.ActionFilterAttribute
+{
+public override void OnActionExecuting(ActionExecutingContext filterContext)
+{
+HttpContext ctx = HttpContext.Current;
+var list = ctx.Session["menu"] as System.Collections.Generic.List<MvcApplication3.Models.Menu>;
+ctx.Request.CurrentExecutionFilePath.ToString();
+bool has = list.Exists(cus => ((cus.URL == ctx.Request.CurrentExecutionFilePath.ToString().ToLower() && cus.Step <= (int)ctx.Session["StepNo"])
+)
+|| (
+ctx.Request.CurrentExecutionFilePath.ToString().ToLower() == "/biet_registration/instructions"
+&& ctx.Request.UrlReferrer.AbsolutePath.ToLower() == "/account/verifyotp"
+) || (ctx.Request.CurrentExecutionFilePath.ToString().ToLower() == "/biet_registration/paymentconfirmation")
+|| (ctx.Request.CurrentExecutionFilePath.ToString().ToLower() == "/biet_registration/paymenterror")
+);
+var path1 = list.Find(m => m.URL == ctx.Request.CurrentExecutionFilePath.ToString().ToLower());
+if (path1 != null)
+if ((int)ctx.Session["StepNo"] == 8 && path1.Step != 8)
+{
+has = false;
+}
+if (!has)
+{
+//FormsAuthentication.SignOut();
+//HttpContext.Current.Session.Clear();
+//HttpContext.Current.Session.Abandon();
+var path = list.Find(m => m.Step == (int)ctx.Session["StepNo"]);
+//filterContext.Result = new RedirectToRouteResult(new RouteValueDictionary { { "action", path.URL }, { "controller", "BIET_Registration" } }); //new RedirectResult("~/Home/Login");
+filterContext.Result = new RedirectResult(path.URL);
+return;
+}
+base.OnActionExecuting(filterContext);
+}
+}
+public class SessionTimeoutAttribute : System.Web.Mvc.ActionFilterAttribute
+{
+public override void OnActionExecuting(ActionExecutingContext filterContext)
+{
+HttpContext ctx = HttpContext.Current;
+string ResqUrl = ctx.Request.CurrentExecutionFilePath;
+if (string.IsNullOrEmpty(SessionManager.RegistrationNo) || SessionManager.RegistrationNo == "" || SessionManager.RegistrationNo == "0")
+{
+FormsAuthentication.SignOut();
+HttpContext.Current.Session.Clear();
+HttpContext.Current.Session.Abandon();
+filterContext.Result = new RedirectToRouteResult(new RouteValueDictionary { { "action", "Login" }, { "controller", "Account" }, { "returnUrl", "SessionTimeout" } }); //new RedirectResult("~/Home/Login");
+//filterContext.Result = new RedirectToRouteResult(new RouteValueDictionary { { "action", "Login" }, { "controller", "Account" }, { "returnUrl", filterContext.HttpContext.Request.RawUrl }}); //new RedirectResult("~/Home/Login");
+return;
+}
+base.OnActionExecuting(filterContext);
+}
+//public void OnResultExecuted(ResultExecutedContext filterContext)
+//{
+// var cache = filterContext.HttpContext.Response.Cache;
+// cache.SetCacheability(HttpCacheability.NoCache);
+// cache.SetRevalidation(HttpCacheRevalidation.ProxyCaches);
+// cache.SetExpires(DateTime.Now.AddYears(-5));
+// cache.AppendCacheExtension("private");
+// cache.AppendCacheExtension("no-cache=Set-Cookie");
+// cache.SetProxyMaxAge(TimeSpan.Zero);
+//}
+}
+public class ExceptionFilter : FilterAttribute, IExceptionFilter
+{
+public void OnException(ExceptionContext filterContext)
+{
+if (!filterContext.ExceptionHandled)
+{
+filterContext.ExceptionHandled = true;
+FormsAuthentication.SignOut();
+HttpContext.Current.Session.Clear();
+HttpContext.Current.Session.Abandon();
+filterContext.Result = new RedirectToRouteResult(new RouteValueDictionary { { "action", "Login" }, { "controller", "Account" }, { "returnUrl", "SessionTimeout" } }); //new RedirectResult("~/Home/Login");
+}
+}
+}
+public class validateSessionTimeoutAttribute : System.Web.Mvc.ActionFilterAttribute
+{
+public override void OnActionExecuting(ActionExecutingContext filterContext)
+{
+HttpContext ctx = HttpContext.Current;
+string ResqUrl = ctx.Request.CurrentExecutionFilePath;
+if (string.IsNullOrEmpty(Convert.ToString(HttpContext.Current.Session["RefNo"])) || Convert.ToString(HttpContext.Current.Session["RefNo"]) == "" || Convert.ToString(HttpContext.Current.Session["RefNo"]) == "0")
+{
+FormsAuthentication.SignOut();
+HttpContext.Current.Session.Clear();
+HttpContext.Current.Session.Abandon();
+filterContext.Result = new RedirectToRouteResult(new RouteValueDictionary { { "action", "Login" }, { "controller", "Account" }, { "returnUrl", "SessionTimeout" } }); //new RedirectResult("~/Home/Login");
+//filterContext.Result = new RedirectToRouteResult(new RouteValueDictionary { { "action", "Login" }, { "controller", "Account" }, { "returnUrl", filterContext.HttpContext.Request.RawUrl }}); //new RedirectResult("~/Home/Login");
+return;
+}
+base.OnActionExecuting(filterContext);
+}
+public void OnResultExecuted(ResultExecutedContext filterContext)
+{
+var cache = filterContext.HttpContext.Response.Cache;
+cache.SetCacheability(HttpCacheability.NoCache);
+cache.SetRevalidation(HttpCacheRevalidation.ProxyCaches);
+cache.SetExpires(DateTime.Now.AddYears(-5));
+cache.AppendCacheExtension("private");
+cache.AppendCacheExtension("no-cache=Set-Cookie");
+cache.SetProxyMaxAge(TimeSpan.Zero);
+}
+}
+}
+}

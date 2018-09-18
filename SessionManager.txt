@@ -1,0 +1,154 @@
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Web;
+namespace BIET.Repository
+{
+public class SessionManager
+{
+public static string UserType
+{
+get
+{
+if (HttpContext.Current.Session["UserType"] != null)
+{
+return (HttpContext.Current.Session["UserType"]).ToString();
+}
+else
+{
+return null;
+}
+}
+set
+{
+HttpContext.Current.Session["UserType"] = value;
+}
+}
+public static string SessionID
+{
+get
+{
+if (HttpContext.Current.Session["SessionID"] != null)
+{
+return (HttpContext.Current.Session["SessionID"]).ToString();
+}
+else
+{
+return null;
+}
+}
+set
+{
+HttpContext.Current.Session["SessionID"] = value;
+}
+}
+public static string RegistrationNo
+{
+get
+{
+if (HttpContext.Current.Session["RegistrationNo"] != null)
+{
+return (HttpContext.Current.Session["RegistrationNo"]).ToString();
+}
+else
+{
+return null;
+}
+}
+set
+{
+HttpContext.Current.Session["RegistrationNo"] = value;
+}
+}
+public static string StudentName
+{
+get
+{
+if (HttpContext.Current.Session["StudentName"] != null)
+{
+return (HttpContext.Current.Session["StudentName"]).ToString();
+}
+else
+{
+return null;
+}
+}
+set
+{
+HttpContext.Current.Session["StudentName"] = value;
+}
+}
+public static string Semester
+{
+get
+{
+if (HttpContext.Current.Session["Semester"] != null)
+{
+return (HttpContext.Current.Session["Semester"]).ToString();
+}
+else
+{
+return null;
+}
+}
+set
+{
+HttpContext.Current.Session["Semester"] = value;
+}
+}
+public static string BranchID
+{
+get
+{
+if (HttpContext.Current.Session["BranchID"] != null)
+{
+return (HttpContext.Current.Session["BranchID"]).ToString();
+}
+else
+{
+return null;
+}
+}
+set
+{
+HttpContext.Current.Session["BranchID"] = value;
+}
+}
+public static string CourseID
+{
+get
+{
+if (HttpContext.Current.Session["CourseID"] != null)
+{
+return (HttpContext.Current.Session["CourseID"]).ToString();
+}
+else
+{
+return null;
+}
+}
+set
+{
+HttpContext.Current.Session["CourseID"] = value;
+}
+}
+public static int StepNo
+{
+get
+{
+if (HttpContext.Current.Session["StepNo"] != null)
+{
+return (int)(HttpContext.Current.Session["StepNo"]);
+}
+else
+{
+return 0;
+}
+}
+set
+{
+HttpContext.Current.Session["StepNo"] = value;
+}
+}
+}
+}
