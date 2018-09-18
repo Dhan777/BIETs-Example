@@ -1,0 +1,6 @@
+if({CandidateFormDetail.identificationMarks}='NA')then
+(
+(true);
+)
+else
+(false);
